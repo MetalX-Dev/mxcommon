@@ -1,0 +1,25 @@
+// controller.fbs
+
+include "payloads/health.fbs";
+include "payloads/machine.fbs";
+include "payloads/ipmi.fbs";
+include "payloads/command.fbs";
+include "payloads/file.fbs";
+
+union ControllerRequestPayload {
+    HealthCheckRequest,
+    MachineInfoRequest,
+    IpmiInfoRequest,
+    IpmiSetupRequest,
+    CommandExecutionRequest,
+    FilePushStartRequest,
+    FilePushSegmentRequest
+}
+
+table ControllerRequest {
+    version: uint8 = 1;
+    id: uint64;
+    payload: ControllerRequestPayload; // implies payload_type
+}
+
+root_type ControllerRequest;

@@ -1,0 +1,26 @@
+// payloads/command.fbs
+
+enum CommandExecutionType: uint8 {
+    Wait,
+    Stream,
+    Once
+}
+
+table CommandExecutionRequest {
+    type: CommandExecutionType;
+    workdir: string;
+    command: string;
+    args: [string];
+    timeout: uint64; // ms, only meaningful when type is Wait or Stream
+}
+
+table CommandExecutionResponse {
+    code: uint8;
+    finished: bool;
+    stdout: string;
+    stderr: string;
+}
+
+table CommandExecutionOnceResponse {
+    success: bool;
+}

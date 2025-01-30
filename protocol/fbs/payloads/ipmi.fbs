@@ -1,0 +1,16 @@
+// payloads/ipmi.fbs
+
+table IpmiInfoRequest {}
+
+table IpmiInfoResponse {
+    ip_address: string;
+}
+
+table IpmiSetupRequest {
+    username: string;
+    password: string;
+}
+
+table IpmiSetupResponse {
+    ok: bool;
+}

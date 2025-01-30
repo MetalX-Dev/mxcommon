@@ -1,0 +1,27 @@
+// agent.fbs
+
+include "payloads/health.fbs";
+include "payloads/machine.fbs";
+include "payloads/ipmi.fbs";
+include "payloads/command.fbs";
+include "payloads/file.fbs";
+
+union AgentResponsePayload {
+    HealthCheckResponse,
+    MachineInfoResponse,
+    IpmiInfoResponse,
+    IpmiSetupResponse,
+    CommandExecutionResponse,
+    CommandExecutionOnceResponse,
+    FilePushStartResponse,
+    FilePushSegmentResponse
+}
+
+table AgentResponse {
+    version: uint8 = 1;
+    id: uint64;
+    payload: AgentResponsePayload; // implies payload_type
+    error: string;
+}
+
+root_type AgentResponse;

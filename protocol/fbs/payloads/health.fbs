@@ -1,0 +1,15 @@
+// payloads/health.fbs
+
+enum HealthStatus: uint8 {
+    Ok, // Running properly
+    Downgrade, // Experiencing non-critical errors
+    Error // Failing, unable to respond to further messages
+}
+
+table HealthCheckRequest {}
+
+table HealthCheckResponse {
+    status: HealthStatus;
+    start_time: uint64; // Unix Timestamp in ms
+    reason: string;
+}

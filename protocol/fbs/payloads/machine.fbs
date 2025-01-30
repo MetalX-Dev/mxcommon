@@ -1,0 +1,74 @@
+// payloads/machine.fbs
+
+struct UUID {
+    lower: uint64;
+    upper: uint64;
+}
+
+table CpuInfo {
+    architecture: string;
+    vendor: string;
+    model: string;
+    cpus: uint32;
+    threads: uint32;
+    sockets: uint32;
+    numa_nodes: uint32; // If 0, NUMA support is disabled
+}
+
+/*
+table MountInfo {
+    mountpoint: string;
+    options: string;
+}
+
+table PartitionInfo {
+    name: string;
+    label: string;
+    fstype: string; // e.g. "btrfs" "vfat"
+    uuid: UUID; // /dev/disk/by-uuid/<uuid>
+    start: uint64; //
+    size: uint64;
+    mounts: [MountInfo];
+}
+*/
+
+table BlkInfo {
+    name: string;
+    id_link: string;
+    model: string;
+    vendor: string;
+    size: uint64;
+}
+
+table Ipv4Info {
+    dhcp_enabled: bool;
+    address: uint32;
+    prefix_length: uint8;
+    gateway: uint32;
+    dns: uint32;
+}
+
+//table Ipv6Info {
+//    dhcp_enabled: bool;
+//    address: // todo:
+//    gateway: // todo:
+//    dns: // todo:
+//}
+
+table NicInfo {
+    name: string;
+    mac_address: string;
+    ipv4: [Ipv4Info];
+//  ipv6: [Ipv6Info];
+    speed: uint32;
+}
+
+table MachineInfoRequest {}
+
+table MachineInfoResponse {
+    product_uuid: UUID; // /sys/devices/virtual/dmi/id/product_uuid
+    cpu: CpuInfo;
+    memory: uint64;
+    block_devices: [BlkInfo];
+    nics: [NicInfo];
+}

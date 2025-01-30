@@ -1,0 +1,56 @@
+// payloads/file.fbs
+
+enum Compression: uint8 {
+    None,
+    Lz4 // considered for its near-disk performance
+}
+
+// Push
+
+table FilePushStartRequest {
+    dest: string;
+    size: uint64; // in byte
+    segment_size: uint64;
+    compression: Compression;
+    xxh3: uint64; // xxHash 3 result, fast and short for our usecase
+}
+
+table FilePushStartResponse {
+    ok: bool; // if not, top-level error should be defined
+}
+
+table FilePushSegmentRequest {
+    start_id: uint64; // the id of the start request
+    end: bool;
+    segment_id: uint64; // the id of the segment
+    data: [uint8];
+}
+
+table FilePushSegmentResponse {
+    ok: bool;
+}
+
+// Pull
+
+table FilePullStartRequest {
+    src: string;
+    segment_size: uint64;
+    compression: Compression;
+}
+
+table FilePullStartResponse {
+    ok: bool;
+    size: uint64;
+    xxh3: uint64;
+}
+
+table FilePullSegmentRequest {
+    start_id: uint64;
+    end: bool;
+    segment_id: uint64;
+}
+
+table FilePullSegmentResponse {
+    ok: bool;
+    data: [uint8];
+}
